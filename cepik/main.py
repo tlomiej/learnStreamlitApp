@@ -1,41 +1,62 @@
 import streamlit as st
-import time
 import requests
 
-searchText = st.text_input('Search')
-searchData = []
 
-def getData(text):
-    time.sleep(4)
-    url = 'https://api.github.com/users/mralexgray/repos'
-    response = requests.get(url)
 
-    if response.status_code == 200:
-        data = response.json()
-        return data
-        
-    else:
-        print(f"Failed to retrieve data: {response.status_code}")
-    return [1,2,3,4,5,text]
+def get_data():
+    print('ppppp')
+    if st.session_state.search_in_progress == False:
+        print('2222222222222222')
+        st.session_state.search_in_progress= True
+        url = 'https://reqres.in/api/users?page=2'
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+            st.session_state.displayResult = True
+            st.session_state.searchData = data
+            st.session_state.search_in_progress = False
+            
+        else:
+            print(f"Failed to retrieve data: {response.status_code}")
+            st.session_state.search_in_progress = False
+
+
+if 'searchData' not in st.session_state:
+    st.session_state.searchData = []
+if 'displayResult' not in st.session_state:
+    st.session_state.displayResult = False
+
+if 'text_input' not in st.session_state:
+    st.session_state.text_input = ''
+
+if 'search_in_progress' not in st.session_state:
+    st.session_state.search_in_progress = False
+
 
 def clear_search_fields():
-    searchText = ''
+    st.session_state.searchData = []
+    st.session_state.displayResult = False
+    st.session_state.text_input = ''
+    st.session_state.search_in_progress = False
 
 
-
-placeholder = st.empty()
-btn = placeholder.button('Find', disabled=False, key='search1')
-if btn:
-    placeholder.button('Find...', disabled=True, key='search2')
-    searchData.append(getData(searchText))
-    
-    
-
-    #placeholder.button('Clear', disabled=False, key='search3', on_click=clear_search_fields)
+def clear_text():
+    st.session_state.text_input = ''
 
 
+#st.text_input("Enter some text:", key='text_input')
+st.text_input('Search', key='text_input')
 
-st.write(searchData)
+col1, col2 = st.columns(2)
+
+col1.button('Search', disabled=False, key='search', on_click=get_data)
+col2.button('Clear', disabled=False, key='clear', on_click=clear_search_fields)
+
+
+if st.session_state.displayResult:
+    st.write(st.session_state.searchData)
+
 
 
 

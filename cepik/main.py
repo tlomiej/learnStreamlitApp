@@ -1,25 +1,22 @@
 import streamlit as st
 import requests
+import time
 
 
 
 def get_data():
-    print('ppppp')
-    if st.session_state.search_in_progress == False:
-        print('2222222222222222')
-        st.session_state.search_in_progress= True
-        url = 'https://reqres.in/api/users?page=2'
+    try:
+        url = 'https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20180101'
         response = requests.get(url)
 
         if response.status_code == 200:
             data = response.json()
             st.session_state.displayResult = True
-            st.session_state.searchData = data
-            st.session_state.search_in_progress = False
-            
+            st.session_state.searchData = data  
         else:
-            print(f"Failed to retrieve data: {response.status_code}")
-            st.session_state.search_in_progress = False
+            st.session_state.searchData = response.status_code
+    except Exception as e:
+        st.session_state.searchData = e
 
 
 if 'searchData' not in st.session_state:
@@ -54,8 +51,10 @@ col1.button('Search', disabled=False, key='search', on_click=get_data)
 col2.button('Clear', disabled=False, key='clear', on_click=clear_search_fields)
 
 
-if st.session_state.displayResult:
-    st.write(st.session_state.searchData)
+#if st.session_state.displayResult:
+st.write(st.session_state.searchData)
+#else:
+#    st.write('fff')
 
 
 

@@ -6,12 +6,11 @@ import time
 
 def get_data():
     try:
-        url = 'https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20180101'
+        url = 'https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20180101&data-do=20180501'
         response = requests.get(url)
 
         if response.status_code == 200:
             data = response.json()
-            st.session_state.displayResult = True
             st.session_state.searchData = data  
         else:
             st.session_state.searchData = response.status_code
@@ -20,9 +19,7 @@ def get_data():
 
 
 if 'searchData' not in st.session_state:
-    st.session_state.searchData = []
-if 'displayResult' not in st.session_state:
-    st.session_state.displayResult = False
+    st.session_state.searchData = ''
 
 if 'text_input' not in st.session_state:
     st.session_state.text_input = ''
@@ -32,8 +29,7 @@ if 'search_in_progress' not in st.session_state:
 
 
 def clear_search_fields():
-    st.session_state.searchData = []
-    st.session_state.displayResult = False
+    st.session_state.searchData = ''
     st.session_state.text_input = ''
     st.session_state.search_in_progress = False
 

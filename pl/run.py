@@ -3,6 +3,8 @@ import pandas as pd
 import json
 import plotly.express as px
 
+dev = False
+path = './../' if dev else ''
 
 if 'sample_data' not in st.session_state:
     st.session_state.sample_data = False
@@ -17,7 +19,7 @@ st.set_page_config(
 
 
 #Data
-with open('./../data/woj_medium.geojson') as f:
+with open(f'{path}data/woj_medium.geojson') as f:
     poland_geojson = json.load(f)
 
 
@@ -37,7 +39,7 @@ with st.sidebar:
     # Wczytanie danych z pliku
     if uploaded_file is not None or st.session_state.sample_data:
 
-        df = pd.read_csv('./../data/test_data.csv' if st.session_state.sample_data else uploaded_file, sep=';', encoding='utf-8', quotechar='"')
+        df = pd.read_csv(f'{path}data/test_data.csv' if st.session_state.sample_data else uploaded_file, sep=';', encoding='utf-8', quotechar='"')
 
         selected_column_value = st.selectbox('Select a column value', list(df.columns), index=2)
         if df[selected_column_value].isnull().any():

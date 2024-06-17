@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import json
-#import altair as alt
 import plotly.express as px
 
 
@@ -26,21 +25,13 @@ dfd = pd.read_csv('../data/test_data.csv', sep=';', encoding='utf-8', quotechar=
 
 
 def show_sample_data():
-    print('Klik')
     st.session_state.sample_data = True
-
-
-    #dfd = pd.read_csv('../data/test_data.csv', sep=';', encoding='utf-8', quotechar='"')
-
-
 
 # Sidebar
 with st.sidebar:
     st.title(':seedling: Poland GUS data')
-    
 
     uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
-
 
     # Wczytanie danych z pliku
     if uploaded_file is not None or st.session_state.sample_data:

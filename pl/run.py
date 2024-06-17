@@ -17,10 +17,10 @@ st.set_page_config(
 
 
 #Data
-with open('woj_medium.geojson') as f:
+with open('data/woj_medium.geojson') as f:
     poland_geojson = json.load(f)
 
-dfd = pd.read_csv('test_data.csv', sep=';', encoding='utf-8', quotechar='"')
+dfd = pd.read_csv('data/test_data.csv', sep=';', encoding='utf-8', quotechar='"')
 
 
 
@@ -36,7 +36,7 @@ with st.sidebar:
     # Wczytanie danych z pliku
     if uploaded_file is not None or st.session_state.sample_data:
         
-        df = pd.read_csv('test_data.csv' if st.session_state.sample_data else uploaded_file)
+        df = pd.read_csv('data/test_data.csv' if st.session_state.sample_data else uploaded_file)
 
         selected_column_value = st.selectbox('Select a column value', list(dfd.columns), index=2)
         if dfd[selected_column_value].isnull().any():

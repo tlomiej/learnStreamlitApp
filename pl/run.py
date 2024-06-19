@@ -62,7 +62,6 @@ def make_choropleth(input_df,input_color_theme, selected_column_id, selected_col
         color_continuous_scale=input_color_theme,
         range_color=(min(dfd[selected_column_value]), max(dfd[selected_column_value])),
         labels={selected_column_value: 'Value'},
-       
         projection="mercator"
     )
 
@@ -84,7 +83,9 @@ def make_choropleth(input_df,input_color_theme, selected_column_id, selected_col
     return fig
 
 if df is not None:
-    dfd = pd.DataFrame(df)
+    dfd = pd.DataFrame(df, columns=['Kod', "Nazwa", selected_column_value ])
+    selected_columns = df[['Kod', "Nazwa", selected_column_value ]]
+
 
 if uploaded_file is not None and st.session_state.sample_data == False:
     tab1, tab2 = st.tabs(["Map", "Table"])
@@ -97,7 +98,7 @@ if uploaded_file is not None and st.session_state.sample_data == False:
         col1.metric(label="Min", value=min(dfd[selected_column_value]))
         col2.metric(label="Max", value=max(dfd[selected_column_value]))
     with tab2:
-        st.dataframe(df) 
+        st.dataframe(selected_columns) 
 
 elif uploaded_file is None and st.session_state.sample_data == True:
     tab1, tab2 = st.tabs(["Map", "Table"])
@@ -112,7 +113,7 @@ elif uploaded_file is None and st.session_state.sample_data == True:
         col2.metric(label="Max", value=max(dfd[selected_column_value]))
 
     with tab2:
-        st.dataframe(df) 
+        st.dataframe(selected_columns) 
 else:
     
     st.markdown(f'''#### Download data from    {st.session_state.sample_data}''')

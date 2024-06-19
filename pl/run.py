@@ -3,8 +3,9 @@ import pandas as pd
 import json
 import plotly.express as px
 
-dev = False
+dev = True
 path = './../' if dev else ''
+
 
 if 'sample_data' not in st.session_state:
     st.session_state.sample_data = False
@@ -15,7 +16,6 @@ st.set_page_config(
     page_icon=":seedling:",
     layout="wide",
     initial_sidebar_state="expanded")
-
 
 
 #Data
@@ -51,8 +51,6 @@ with st.sidebar:
         st.session_state.sample_data = False
 
 #Map
-if df is not None:
-    dfd = pd.DataFrame(df)
 
 def make_choropleth(input_df,input_color_theme, selected_column_id, selected_column_value):
     fig = px.choropleth(
@@ -85,22 +83,36 @@ def make_choropleth(input_df,input_color_theme, selected_column_id, selected_col
 
     return fig
 
+if df is not None:
+    dfd = pd.DataFrame(df)
 
 if uploaded_file is not None and st.session_state.sample_data == False:
-    st.markdown(f'#### {selected_column_value}')
-    choropleth = make_choropleth('df_selected_year', selected_color_theme,'selected_column_id', selected_column_value)
-    st.plotly_chart(choropleth, use_container_width=True)
-    col1, col2 = st.columns(2, gap='small')
-    col1.metric(label="Min", value=min(dfd[selected_column_value]))
-    col2.metric(label="Max", value=max(dfd[selected_column_value]))
+    tab1, tab2 = st.tabs(["Map", "Table"])
+
+    with tab1:
+        st.markdown(f'#### {selected_column_value}')
+        choropleth = make_choropleth('df_selected_year', selected_color_theme,'selected_column_id', selected_column_value)
+        st.plotly_chart(choropleth, use_container_width=True)
+        col1, col2 = st.columns(2, gap='small')
+        col1.metric(label="Min", value=min(dfd[selected_column_value]))
+        col2.metric(label="Max", value=max(dfd[selected_column_value]))
+    with tab2:
+        st.dataframe(df) 
+
 elif uploaded_file is None and st.session_state.sample_data == True:
-    st.markdown(f'''#### Sample Data ''')
-    st.markdown(f'#### {selected_column_value}')
-    choropleth = make_choropleth('df_selected_year', selected_color_theme,'selected_column_id', selected_column_value)
-    st.plotly_chart(choropleth, use_container_width=True)
-    col1, col2 = st.columns(2, gap='small')
-    col1.metric(label="Min", value=min(dfd[selected_column_value]))
-    col2.metric(label="Max", value=max(dfd[selected_column_value]))
+    tab1, tab2 = st.tabs(["Map", "Table"])
+
+    with tab1:
+        st.markdown(f'''#### Sample Data ''')
+        st.markdown(f'#### {selected_column_value}')
+        choropleth = make_choropleth('df_selected_year', selected_color_theme,'selected_column_id', selected_column_value)
+        st.plotly_chart(choropleth, use_container_width=True)
+        col1, col2 = st.columns(2, gap='small')
+        col1.metric(label="Min", value=min(dfd[selected_column_value]))
+        col2.metric(label="Max", value=max(dfd[selected_column_value]))
+
+    with tab2:
+        st.dataframe(df) 
 else:
     
     st.markdown(f'''#### Download data from    {st.session_state.sample_data}''')

@@ -3,7 +3,7 @@ import pandas as pd
 import json
 import plotly.express as px
 
-dev = True
+dev = False
 path = './../' if dev else ''
 
 

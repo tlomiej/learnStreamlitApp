@@ -1,9 +1,10 @@
+from utiles import make_choropleth
 import streamlit as st
 import pandas as pd
 import json
 import plotly.express as px
 
-dev = False
+dev = True
 path = './../' if dev else ''
 
 
@@ -50,37 +51,7 @@ with st.sidebar:
     else:
         st.session_state.sample_data = False
 
-#Map
 
-def make_choropleth(input_df,input_color_theme, selected_column_id, selected_column_value):
-    fig = px.choropleth(
-        df,
-        geojson=poland_geojson,
-        locations='Kod',
-        featureidkey='properties.kod',
-        color=selected_column_value,
-        color_continuous_scale=input_color_theme,
-        range_color=(min(dfd[selected_column_value]), max(dfd[selected_column_value])),
-        labels={selected_column_value: 'Value'},
-        projection="mercator"
-    )
-
-    fig.update_geos(fitbounds="locations", visible=True)
-    fig.update_layout(
-        template='plotly_dark',
-        plot_bgcolor='rgba(0, 0, 0, 0)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        margin=dict(l=0, r=0, t=0, b=0),
-        height=350,
-        geo=dict(
-            projection_scale=6,
-            center={"lat": 52, "lon": 19},
-            visible=True
-        )
-
-    )
-
-    return fig
 
 if df is not None:
     dfd = pd.DataFrame(df, columns=['Kod', "Nazwa", selected_column_value ])
@@ -92,7 +63,7 @@ if uploaded_file is not None and st.session_state.sample_data == False:
 
     with tab1:
         st.markdown(f'#### {selected_column_value}')
-        choropleth = make_choropleth('df_selected_year', selected_color_theme,'selected_column_id', selected_column_value)
+        choropleth = make_choropleth(dfd, selected_color_theme,'selected_column_id', selected_column_value, poland_geojson)
         st.plotly_chart(choropleth, use_container_width=True)
         col1, col2 = st.columns(2, gap='small')
         col1.metric(label="Min", value=min(dfd[selected_column_value]))
@@ -106,7 +77,7 @@ elif uploaded_file is None and st.session_state.sample_data == True:
     with tab1:
         st.markdown(f'''#### Sample Data ''')
         st.markdown(f'#### {selected_column_value}')
-        choropleth = make_choropleth('df_selected_year', selected_color_theme,'selected_column_id', selected_column_value)
+        choropleth = make_choropleth(df, selected_color_theme,'selected_column_id', selected_column_value, poland_geojson)
         st.plotly_chart(choropleth, use_container_width=True)
         col1, col2 = st.columns(2, gap='small')
         col1.metric(label="Min", value=min(dfd[selected_column_value]))

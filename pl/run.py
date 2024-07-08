@@ -4,6 +4,8 @@ import pandas as pd
 import json
 import plotly.express as px
 
+from components.sample_component.my_component import my_component
+
 dev = True
 path = './../' if dev else ''
 
@@ -13,7 +15,7 @@ if 'sample_data' not in st.session_state:
 
 
 st.set_page_config(
-    page_title="Poland GUS data",
+    page_title="GUS data",
     page_icon=":seedling:",
     layout="wide",
     initial_sidebar_state="expanded")
@@ -52,7 +54,6 @@ with st.sidebar:
         st.session_state.sample_data = False
 
 
-
 if df is not None:
     dfd = pd.DataFrame(df, columns=['Kod', "Nazwa", selected_column_value ])
     selected_columns = df[['Kod', "Nazwa", selected_column_value ]]
@@ -72,7 +73,7 @@ if uploaded_file is not None and st.session_state.sample_data == False:
         st.dataframe(selected_columns) 
 
 elif uploaded_file is None and st.session_state.sample_data == True:
-    tab1, tab2 = st.tabs(["Map", "Table"])
+    tab1, tab2, tab3 = st.tabs(["Map", "Table", "Custom"])
 
     with tab1:
         st.markdown(f'''#### Sample Data ''')
@@ -85,6 +86,11 @@ elif uploaded_file is None and st.session_state.sample_data == True:
 
     with tab2:
         st.dataframe(selected_columns) 
+    
+    with tab3:
+        st.markdown('test')
+        my_component('test')
+
 else:
     
     st.markdown(f'''#### Download data from    {st.session_state.sample_data}''')

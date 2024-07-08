@@ -19,7 +19,7 @@ _RELEASE = False
 # best practice.
 
 if not _RELEASE:
-    _component_func = components.declare_component(
+    _component_slider = components.declare_component(
         # We give the component a simple, descriptive name ("discreat_slider"
         # does not fit this bill, so please choose something better for your
         # own component :)
@@ -35,7 +35,7 @@ else:
     # build directory:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend/build")
-    _component_func = components.declare_component("discreat_slider", path=build_dir)
+    _component_slider = components.declare_component("discreat_slider", path=build_dir)
 
 
 # Create a wrapper function for the component. This is an optional
@@ -70,7 +70,7 @@ def discreat_slider(key=None):
     #
     # "default" is a special argument that specifies the initial return
     # value of the component before the user has interacted with it.
-    component_value = _component_func(key=key, default=0)
+    component_value = _component_slider(key=key, default=0)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.

@@ -6,7 +6,7 @@ import plotly.express as px
 
 from components.sample_component.my_component import my_component
 
-dev = True
+dev = False
 path = './../' if dev else ''
 
 

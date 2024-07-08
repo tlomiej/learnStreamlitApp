@@ -7,7 +7,7 @@ import plotly.express as px
 from components.sample_component.my_component import my_component
 from components.discreat_slider import discreat_slider
 
-dev = False
+dev = True
 path = './../' if dev else ''
 
 
@@ -55,7 +55,7 @@ with st.sidebar:
         st.session_state.sample_data = False
 
 
-discreat_slider('test')
+discreat_slider('test', 'aaa')
 
 if df is not None:
     dfd = pd.DataFrame(df, columns=['Kod', "Nazwa", selected_column_value ])

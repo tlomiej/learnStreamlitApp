@@ -5,6 +5,7 @@ import json
 import plotly.express as px
 
 from components.sample_component.my_component import my_component
+from components.discreat_slider import discreat_slider
 
 dev = False
 path = './../' if dev else ''
@@ -54,6 +55,8 @@ with st.sidebar:
         st.session_state.sample_data = False
 
 
+discreat_slider('test')
+
 if df is not None:
     dfd = pd.DataFrame(df, columns=['Kod', "Nazwa", selected_column_value ])
     selected_columns = df[['Kod', "Nazwa", selected_column_value ]]
@@ -88,8 +91,8 @@ elif uploaded_file is None and st.session_state.sample_data == True:
         st.dataframe(selected_columns) 
     
     with tab3:
-        st.markdown('test')
-        my_component('test')
+        click_num = my_component('test', key='comp')
+        st.markdown(f'{click_num}')
 
 else:
     

@@ -4,10 +4,13 @@ import pandas as pd
 import json
 import plotly.express as px
 
-from components.sample_component.my_component import my_component
-from components.discreat_slider import discreat_slider
+#from components.sample_component.my_component import my_component
+#from components.discreat_slider import discreat_slider
 
-dev = False
+#from components.comp.MyComp import my_component
+#from components.comp.SliderComp import discreat_slider
+
+dev = True
 path = './../' if dev else ''
 
 
@@ -55,7 +58,6 @@ with st.sidebar:
         st.session_state.sample_data = False
 
 
-discreat_slider()
 
 if df is not None:
     dfd = pd.DataFrame(df, columns=['Kod', "Nazwa", selected_column_value ])
@@ -76,7 +78,7 @@ if uploaded_file is not None and st.session_state.sample_data == False:
         st.dataframe(selected_columns) 
 
 elif uploaded_file is None and st.session_state.sample_data == True:
-    tab1, tab2, tab3 = st.tabs(["Map", "Table", "Custom"])
+    tab1, tab2 = st.tabs(["Map", "Table"])
 
     with tab1:
         st.markdown(f'''#### Sample Data ''')
@@ -90,9 +92,9 @@ elif uploaded_file is None and st.session_state.sample_data == True:
     with tab2:
         st.dataframe(selected_columns) 
     
-    with tab3:
-        click_num = my_component('test', key='comp')
-        st.markdown(f'{click_num}')
+    #with tab3:
+    #    click_num = my_component('test', key='comp')
+    #    st.markdown(f'{click_num}')
 
 else:
     

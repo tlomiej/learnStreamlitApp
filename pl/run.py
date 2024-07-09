@@ -10,7 +10,7 @@ import plotly.express as px
 #from components.comp.MyComp import my_component
 #from components.comp.SliderComp import discreat_slider
 
-dev = True
+dev = False
 path = './../' if dev else ''
 
 

@@ -33,23 +33,18 @@ df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
 min_date = df['Date'].min()
 max_date = df['Date'].max()
 
-
-st.write(min_date)
-st.write(max_date)
-
-st.markdown(pd.date_range(min_date, max_date + pd.Timedelta(days=1), freq='D'))
-
-
 start_date, end_date = st.select_slider(
     "Date",
-    options = pd.date_range(min_date, max_date + pd.Timedelta(days=1), freq='D'),
-    value=(min_date,max_date))
+    options = [date.strftime("%d-%m-%Y") for date in pd.date_range(min_date, max_date + pd.Timedelta(days=1), freq='D')],
+    value=(min_date.strftime("%d-%m-%Y"),max_date.strftime("%d-%m-%Y")))
 
 
-
-
-
-df_filter = df[(df['Magnitude'] >= start_magnitude) & (df['Magnitude'] <= end_magnitude) & (df['Depth (km)'] >= start_depth) & (df['Depth (km)'] <= end_depth)]
+df_filter = df[(df['Magnitude'] >= start_magnitude)
+               & (df['Magnitude'] <= end_magnitude) 
+               & (df['Depth (km)'] >= start_depth) 
+               & (df['Depth (km)'] <= end_depth)
+               & (df['Date'] >= start_date) 
+               & (df['Date'] <= end_date)]
 
 
 
